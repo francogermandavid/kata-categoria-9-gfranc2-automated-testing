@@ -24,12 +24,12 @@ public class AdminPage {
     private String editButtonLocator = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[2]/div[3]/div/div[2]/div[1]/div/div[6]/div/button[2]";
     private String deleteUserButtonLocator = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[2]/div[3]/div/div[2]/div[1]/div/div[6]/div/button[1]";
     private String confirmDeleteButtonLocator = "//*[@id=\"app\"]/div[3]/div/div/div/div[3]/button[2]";
-    private String deleteUserToastLocator = "//*[@id=\"oxd-toaster_1\"]/div";
+    private String deleteUserToastLocator = "//*[@id=\"oxd-toaster_1\"]/div[1]";
     private String userRoleFieldLocator = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[2]/div[3]/div/div[2]/div[1]/div/div[3]";
     private String userStatusFieldLocator = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[2]/div[3]/div/div[2]/div[1]/div/div[5]";
     private String userNameTextBoxLocator = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[1]/div[2]/form/div[1]/div/div[1]/div/div[2]/input";
     private String searchUserButtonLocator = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[1]/div[2]/form/div[2]/button[2]";
-    private String notFoundToastLocator = "//*[@id=\"oxd-toaster_1\"]/div";
+    private String notFoundToastLocator = "//*[@id=\"oxd-toaster_1\"]/div[2]";
 
     public AdminPage(WebDriver driverx) {
         this.driver = driverx;
@@ -54,12 +54,12 @@ public class AdminPage {
     public void deleteCreatedUser() {
         WebElement deleteUserButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(deleteUserButtonLocator)));
         deleteUserButton.click();
-        WebElement confirmDeleteButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(confirmDeleteButtonLocator)));
+        WebElement confirmDeleteButton = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(confirmDeleteButtonLocator)));
         confirmDeleteButton.click();
         WebElement deleteUserToast = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(deleteUserToastLocator)));
         System.out.println(deleteUserToast.getText());
-        Assert.assertTrue(deleteUserToast.getText().contains("Successfully Deleted"));
 
+        Assert.assertTrue(deleteUserToast.getText().contains("Successfully Deleted"));
     }
 
     public void validateUserRole(String expectedRole) {
@@ -74,9 +74,8 @@ public class AdminPage {
         Assert.assertEquals(userStatusField.getText(), expectedStatus);
     }
 
-    public void validateExistenceUser(String userNameSearched) throws InterruptedException {
-        Thread.sleep(3000);
-        WebElement searchUserNameTextBox = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(userNameTextBoxLocator)));
+    public void validateExistenceUser(String userNameSearched) {
+        WebElement searchUserNameTextBox = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(userNameTextBoxLocator)));
         searchUserNameTextBox.sendKeys(userNameSearched);
         WebElement searchUserButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(searchUserButtonLocator)));
         searchUserButton.click();
