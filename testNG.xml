@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="FrontEndSuite" thread-count="1" parallel="tests">
+
+    <listeners>
+        <listener class-name="listeners.ExtentListeners"/>
+    </listeners>
+
+    <test name="Test to CRUD operations page">
+        <classes>
+            <class name="tests.TestFlujoUsuario"> </class>
+        </classes>
+    </test>
+</suite>

@@ -1,0 +1,34 @@
+name: Run test workflow for kata
+
+on:
+  push:
+    branches:
+      - master
+      - staging
+
+jobs:
+  integration-kata-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Paso 1: Clonar el repositorio (solo necesitamos un paso de checkout)
+      - name: Checkout automation project
+        uses: actions/checkout@v4
+
+      # Paso 2: Configurar JDK para ejecutar el proyecto de automatización (Selenium con Maven)
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+          architecture: x64
+          cache: 'maven'
+
+      # Paso 3: Instalar dependencias de Maven (esto instalará las dependencias de todo el proyecto)
+      - name: Install dependencies for automation project
+        run: mvn clean install
+
+      # Paso 4: Ejecutar las pruebas de automatización
+      - name: Run test cases for automation project
+        run: mvn test
+
