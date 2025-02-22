@@ -78,9 +78,8 @@ public class TestFlujoUsuario extends ExtentListeners {
     }
 
     @AfterClass
-    public void tearDown() throws InterruptedException {
+    public void tearDown() {
         adminPage.validateExistenceUser("1"+ MYNAME +"1234");
-        Thread.sleep(4000);
         driver.quit();
     }
 }
