@@ -29,6 +29,6 @@ jobs:
         run: mvn clean install
 
       # Paso 4: Ejecutar las pruebas de automatización
-      - name: Run test cases for automation project
+      - name: Run test cases for automation kata project
         run: mvn test
 
