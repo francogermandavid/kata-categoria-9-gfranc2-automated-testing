@@ -60,7 +60,7 @@ public class TestManageUser extends ExtentListeners {
         adminPage.clickAddProfile();
         addUserPage.selectAdminRole();
         addUserPage.setEmployeeName(validEmployeeName);
-        addUserPage.setStatusEmployee();
+        addUserPage.setStatusEnabled();
         addUserPage.setUserName(USER_NAME);
         addUserPage.setPassword(PASSWORD);
         addUserPage.confirmPassword(PASSWORD);
@@ -69,10 +69,9 @@ public class TestManageUser extends ExtentListeners {
 
     @Test(priority = 2, dependsOnMethods = "createUser")
     public void editUser() {
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
         adminPage.editCreatedUser();
-        editUserPage.editUserRole();
-        editUserPage.editUserStatus();
+        editUserPage.editRoleToEss();
+        editUserPage.editStatusToDisabled();
         editUserPage.editUserPassword(NEW_PASSWORD);
         adminPage.validateUserRole("ESS");
         adminPage.validateUserStatus("Disabled");

@@ -55,7 +55,7 @@ public class EditUserPage {
         PageFactory.initElements(driver, this);
     }
 
-    public void editUserRole() {
+    public void editRoleToEss() {
         try {
             userRoleSelector.click();
             essRoleSelector.click();
@@ -65,7 +65,7 @@ public class EditUserPage {
         }
     }
 
-    public void editUserStatus() {
+    public void editStatusToDisabled() {
         try {
             selectStatus.click();
             disabledOption.click();
@@ -90,7 +90,6 @@ public class EditUserPage {
         } catch (Exception e) {
             ExtentListeners.logStep("Error al modificar la contraseña del usuario");
         }
-
     }
 }
 
