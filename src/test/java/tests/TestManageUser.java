@@ -2,13 +2,25 @@ package tests;
 
 import listeners.ExtentListeners;
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.*;
-import pages.mainpages.*;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+import pages.AddUserPage;
+import pages.AdminPage;
+import pages.DashBoardPage;
+import pages.EditUserPage;
+import pages.LoginPage;
 import utils.DriverFactory;
 
 import java.time.Duration;
 
-public class TestFlujoUsuario extends ExtentListeners {
+import static utils.Config.BASE_URL;
+import static utils.Config.IMPLICIT_WAIT;
+import static utils.TestData.NEW_PASSWORD;
+import static utils.TestData.PASSWORD;
+import static utils.TestData.USER_NAME;
+
+public class TestManageUser extends ExtentListeners {
 
     private WebDriver driver;
     private LoginPage loginPage;
@@ -19,55 +31,48 @@ public class TestFlujoUsuario extends ExtentListeners {
     private String correctUserName;
     private String correctPassword;
     private String validEmployeeName;
-    static final String MYNAME = "German";
+
 
     @BeforeTest
     public void setUp() {
         driver = DriverFactory.getDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(IMPLICIT_WAIT));
         loginPage = new LoginPage(driver);
         dashboardPage = new DashBoardPage(driver);
         adminPage = new AdminPage(driver);
         addUserPage = new AddUserPage(driver);
         editUserPage = new EditUserPage(driver);
-        driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+        driver.get(BASE_URL);
         driver.manage().window().maximize();
         correctUserName = loginPage.getCorrectUserName();
         correctPassword = loginPage.getCorrectPassword();
     }
 
-    public void login(String user, String pass) {
-        loginPage.sendUserName(user);
-        loginPage.sendPassword(pass);
-        loginPage.clickLogin();
-    }
-
     @Test(priority = 0)
-    public void LoginWithCorrectCredentials() {
-        login(correctUserName, correctPassword);
+    public void enterAdminOptions() {
+        loginPage.login(correctUserName, correctPassword);
         dashboardPage.viewAdminOptions();
     }
 
-    @Test(priority = 1, dependsOnMethods = "LoginWithCorrectCredentials")
+    @Test(priority = 1, dependsOnMethods = "enterAdminOptions")
     public void createUser() throws InterruptedException {
         validEmployeeName = adminPage.getFirstEmployeeName();
         adminPage.clickAddProfile();
         addUserPage.selectAdminRole();
         addUserPage.setEmployeeName(validEmployeeName);
-        addUserPage.setStatusEmployee();
-        addUserPage.setUserName(MYNAME);
-        addUserPage.setPassword(MYNAME);
-        addUserPage.confirmPassword(MYNAME);
+        addUserPage.setStatusEnabled();
+        addUserPage.setUserName(USER_NAME);
+        addUserPage.setPassword(PASSWORD);
+        addUserPage.confirmPassword(PASSWORD);
         addUserPage.confirmSaveUser();
     }
 
     @Test(priority = 2, dependsOnMethods = "createUser")
     public void editUser() {
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
         adminPage.editCreatedUser();
-        editUserPage.editUserRole();
-        editUserPage.editUserStatus();
-        editUserPage.editUserPassword(MYNAME);
+        editUserPage.editRoleToEss();
+        editUserPage.editStatusToDisabled();
+        editUserPage.editUserPassword(NEW_PASSWORD);
         adminPage.validateUserRole("ESS");
         adminPage.validateUserStatus("Disabled");
     }
@@ -75,12 +80,11 @@ public class TestFlujoUsuario extends ExtentListeners {
     @Test(priority = 3, dependsOnMethods = "editUser")
     public void deleteUser() {
         adminPage.deleteCreatedUser();
+        adminPage.validateExistenceUser(USER_NAME);
     }
 
     @AfterClass
-    public void tearDown() throws InterruptedException {
-        adminPage.validateExistenceUser("1"+ MYNAME +"1234");
-        Thread.sleep(4000);
+    public void tearDown() {
         driver.quit();
     }
 }

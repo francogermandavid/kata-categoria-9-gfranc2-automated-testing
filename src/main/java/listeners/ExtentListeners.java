@@ -11,6 +11,7 @@ import org.testng.ITestListener;
 import org.testng.ITestResult;
 
 import java.util.Arrays;
+import java.util.logging.Logger;
 
 public class ExtentListeners implements ITestListener {
 
@@ -20,6 +21,14 @@ public class ExtentListeners implements ITestListener {
 
     private static ThreadLocal<ExtentTest> testReport = new ThreadLocal<>();
 
+    private static Logger logger = Logger.getLogger(ExtentListeners.class.getName());
+
+    public static void logStep(String message) {
+        logger.info(message);
+        if (testReport.get() != null) {
+            testReport.get().info(message);
+        }
+    }
 
     @Override
     public void onTestStart(final ITestResult result) {
@@ -58,9 +67,5 @@ public class ExtentListeners implements ITestListener {
         if (extent != null) {
             extent.flush();
         }
-    }
-
-    public void remove() {
-        testReport.remove();
     }
 }
