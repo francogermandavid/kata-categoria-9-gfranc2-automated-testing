@@ -111,8 +111,9 @@ El archivo `kata-test-integration.yml` define un pipeline de CI/CD que se ejecut
          - name: Set up JDK
            uses: actions/setup-java@v3
            with:
-             java-version: '21'      # Especifica la versión de Java
-   
+             distribution: 'adopt'      # Especifica la distribución de Java
+             java-version: '21'         # Especifica la versión de Java
+
          - name: Install dependencies for automation project
            run: mvn clean install -DskipTests  # Descarga dependencias y compila sin ejecutar pruebas
    
@@ -145,7 +146,7 @@ por cambiar la versión de Java que quieres usar, los comandos usados para ejecu
 
 2. Ejecuta tus test con el comando:
    ```sh
-   mvn test -P run-testing
+    mvn test -P run-testing
    ```
 
 4. Revisa los reportes generados en `AutomationReport.html`.
