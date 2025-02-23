@@ -24,3 +24,4 @@ sun_checks.xml
 .env
 logs/
 /allure-results
+sonar-project-custom.properties
