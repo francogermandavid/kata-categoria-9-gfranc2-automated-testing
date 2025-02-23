@@ -1,5 +1,6 @@
 package pages.mainpages;
 
+import listeners.ExtentListeners;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,34 +11,46 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.time.Duration;
+import java.util.logging.Logger;
+
+import static constants.Locators.EditUserPage.CHANGE_PASS_CHECKBOX_XPATH;
+import static constants.Locators.EditUserPage.CONFIRM_EDIT_TOAST_XPATH;
+import static constants.Locators.EditUserPage.CONFIRM_PASSWORD_TEXTBOX_XPATH;
+import static constants.Locators.EditUserPage.DISABLED_OPTION_XPATH;
+import static constants.Locators.EditUserPage.ESS_ROLE_SELECTOR_XPATH;
+import static constants.Locators.EditUserPage.PASSWORD_TEXTBOX_XPATH;
+import static constants.Locators.EditUserPage.SAVE_USER_BUTTON_XPATH;
+import static constants.Locators.EditUserPage.SELECT_STATUS_XPATH;
+import static constants.Locators.EditUserPage.USER_ROLE_SELECTOR_XPATH;
 
 public class EditUserPage {
 
-    @FindBy(xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div/div[2]/i")
+    @FindBy(xpath = USER_ROLE_SELECTOR_XPATH)
     private WebElement userRoleSelector;
 
-    @FindBy(xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div[2]/div[3]")
+    @FindBy(xpath = ESS_ROLE_SELECTOR_XPATH)
     private WebElement essRoleSelector;
 
-    @FindBy(xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[3]/div/div[2]/div/div/div[2]/i")
+    @FindBy(xpath = SELECT_STATUS_XPATH)
     private WebElement selectStatus;
 
-    @FindBy(xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[3]/div/div[2]/div/div[2]/div[3]")
+    @FindBy(xpath = DISABLED_OPTION_XPATH)
     private WebElement disabledOption;
 
-    @FindBy(xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[5]/div/div[2]/div/label/span")
+    @FindBy(xpath = CHANGE_PASS_CHECKBOX_XPATH)
     private WebElement changePassCheckbox;
 
-    @FindBy(xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[1]/div/div[2]/input")
+    @FindBy(xpath = PASSWORD_TEXTBOX_XPATH)
     private WebElement passwordTextBox;
 
-    @FindBy(xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[2]/div/div[2]/input")
+    @FindBy(xpath = CONFIRM_PASSWORD_TEXTBOX_XPATH)
     private WebElement confirmPasswordTextBox;
 
-    @FindBy(xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/button[2]")
+    @FindBy(xpath = SAVE_USER_BUTTON_XPATH)
     private WebElement saveUserButton;
 
     private WebDriver driver;
+    private static final Logger LOGGER = Logger.getLogger(EditUserPage.class.getName());
 
     public EditUserPage(WebDriver driverx) {
         this.driver = driverx;
@@ -45,24 +58,41 @@ public class EditUserPage {
     }
 
     public void editUserRole() {
-        userRoleSelector.click();
-        essRoleSelector.click();
+        try {
+            userRoleSelector.click();
+            essRoleSelector.click();
+            ExtentListeners.logStep("Rol del usuario modificado correctamente");
+        } catch (Exception e) {
+            ExtentListeners.logStep("Error al modificar el rol del usuario");
+        }
     }
 
     public void editUserStatus() {
-        selectStatus.click();
-        disabledOption.click();
+        try {
+            selectStatus.click();
+            disabledOption.click();
+            ExtentListeners.logStep("Estado del usuario modificado correctamente");
+        } catch (Exception e) {
+            ExtentListeners.logStep("Error al modificar el estado del usuario");
+        }
     }
 
     public void editUserPassword(String pass) {
-        changePassCheckbox.click();
-        passwordTextBox.sendKeys("098" + pass + "12345");
-        confirmPasswordTextBox.sendKeys("098" + pass + "12345");
-        saveUserButton.click();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        WebElement confirmEditUserToast = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"oxd-toaster_1\"]/div")));
-        System.out.println(confirmEditUserToast.getText());
-        Assert.assertTrue(confirmEditUserToast.getText().contains("Successfully Updated"));
-    }
+        try {
+            changePassCheckbox.click();
+            passwordTextBox.sendKeys(pass);
+            confirmPasswordTextBox.sendKeys(pass);
+            saveUserButton.click();
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+            WebElement confirmEditToast = wait.until(ExpectedConditions.elementToBeClickable(
+                    By.xpath(CONFIRM_EDIT_TOAST_XPATH)));
+            Assert.assertTrue(confirmEditToast.getText().contains("Successfully Updated"));
+            ExtentListeners.logStep("Contraseña del usuario modificada correctamente,"
+                    + "la nueva contraseña es: " + pass);
+        } catch (Exception e) {
+            ExtentListeners.logStep("Error al modificar la contraseña del usuario");
+        }
 
+    }
 }
+

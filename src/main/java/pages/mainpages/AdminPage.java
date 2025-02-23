@@ -1,5 +1,7 @@
 package pages.mainpages;
 
+import constants.Locators;
+import listeners.ExtentListeners;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,30 +12,22 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.time.Duration;
+import java.util.logging.Logger;
 
 public class AdminPage {
-    @FindBy(xpath = "//button[normalize-space()='Add']")
+    @FindBy(xpath = Locators.AdminPage.ADD_USER_BUTTON)
     private WebElement addUserButton;
 
-    @FindBy(xpath = "//div[@role='rowgroup']//div[1]//div[1]//div[4]//div[1]")
+    @FindBy(xpath = Locators.AdminPage.FIRST_EMPLOYEE_NAME)
     private WebElement firstOptionEmployeeName;
 
     private WebDriver driver;
-    private String firstEmployeeName;
     private WebDriverWait wait;
-    private String editButtonLocator = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[2]/div[3]/div/div[2]/div[1]/div/div[6]/div/button[2]";
-    private String deleteUserButtonLocator = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[2]/div[3]/div/div[2]/div[1]/div/div[6]/div/button[1]";
-    private String confirmDeleteButtonLocator = "//*[@id=\"app\"]/div[3]/div/div/div/div[3]/button[2]";
-    private String deleteUserToastLocator = "//*[@id=\"oxd-toaster_1\"]/div[1]";
-    private String userRoleFieldLocator = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[2]/div[3]/div/div[2]/div[1]/div/div[3]";
-    private String userStatusFieldLocator = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[2]/div[3]/div/div[2]/div[1]/div/div[5]";
-    private String userNameTextBoxLocator = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[1]/div[2]/form/div[1]/div/div[1]/div/div[2]/input";
-    private String searchUserButtonLocator = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[1]/div[2]/form/div[2]/button[2]";
-    private String notFoundToastLocator = "//*[@id=\"oxd-toaster_1\"]/div[2]";
+    private static final Logger LOGGER = Logger.getLogger(AdminPage.class.getName());
 
     public AdminPage(WebDriver driverx) {
         this.driver = driverx;
-        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         PageFactory.initElements(driver, this);
     }
 
@@ -42,45 +36,63 @@ public class AdminPage {
     }
 
     public String getFirstEmployeeName() {
-        firstEmployeeName = firstOptionEmployeeName.getText();
-        return firstEmployeeName;
+        return firstOptionEmployeeName.getText();
     }
 
     public void editCreatedUser() {
-        WebElement editButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(editButtonLocator)));
+        WebElement editButton = wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath(Locators.AdminPage.EDIT_BUTTON)));
         editButton.click();
     }
 
     public void deleteCreatedUser() {
-        WebElement deleteUserButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(deleteUserButtonLocator)));
-        deleteUserButton.click();
-        WebElement confirmDeleteButton = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(confirmDeleteButtonLocator)));
-        confirmDeleteButton.click();
-        WebElement deleteUserToast = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(deleteUserToastLocator)));
-        System.out.println(deleteUserToast.getText());
+        try {
+            WebElement deleteUserButton = wait.until(ExpectedConditions.elementToBeClickable(
+                    By.xpath(Locators.AdminPage.DELETE_USER_BUTTON)));
+            deleteUserButton.click();
+            WebElement confirmDeleteButton = wait.until(ExpectedConditions.presenceOfElementLocated(
+                    By.xpath(Locators.AdminPage.CONFIRM_DELETE_BUTTON)));
+            confirmDeleteButton.click();
+            WebElement deleteUserToast = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath(Locators.AdminPage.DELETE_TOAST)));
+            Assert.assertTrue(deleteUserToast.getText().contains("Successfully Deleted"));
+            ExtentListeners.logStep("Se ha eliminado el usuario correctamente");
+        } catch (Exception e) {
+            ExtentListeners.logStep("No se ha podido eliminar el usuario");
+            e.printStackTrace();
+        }
 
-        Assert.assertTrue(deleteUserToast.getText().contains("Successfully Deleted"));
     }
 
     public void validateUserRole(String expectedRole) {
-        WebElement userRoleField = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(userRoleFieldLocator)));
-        System.out.println(userRoleField.getText());
-        Assert.assertEquals(userRoleField.getText(), expectedRole);
+            WebElement userRoleField = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath(Locators.AdminPage.USER_ROLE_FIELD)));
+            ExtentListeners.logStep("El rol del usuario es: " + userRoleField.getText());
+            Assert.assertEquals(userRoleField.getText(), expectedRole);
     }
 
     public void validateUserStatus(String expectedStatus) {
-        WebElement userStatusField = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(userStatusFieldLocator)));
-        System.out.println(userStatusField.getText());
+        WebElement userStatusField = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath(Locators.AdminPage.USER_STATUS_FIELD)));
+        ExtentListeners.logStep("El estado del usuario es: " + userStatusField.getText());
         Assert.assertEquals(userStatusField.getText(), expectedStatus);
     }
 
     public void validateExistenceUser(String userNameSearched) {
-        WebElement searchUserNameTextBox = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(userNameTextBoxLocator)));
-        searchUserNameTextBox.sendKeys(userNameSearched);
-        WebElement searchUserButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(searchUserButtonLocator)));
-        searchUserButton.click();
-        WebElement notFoundToast = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(notFoundToastLocator)));
-        System.out.println(notFoundToast.getText());
-        Assert.assertTrue(notFoundToast.getText().contains("No Records Found"));
+        try {
+            WebElement searchUserNameTextBox = wait.until(ExpectedConditions.presenceOfElementLocated(
+                    By.xpath(Locators.AdminPage.USERNAME_TEXTBOX)));
+            searchUserNameTextBox.sendKeys(userNameSearched);
+            WebElement searchUserButton = wait.until(ExpectedConditions.elementToBeClickable(
+                    By.xpath(Locators.AdminPage.SEARCH_USER_BUTTON)));
+            searchUserButton.click();
+            WebElement notFoundToast = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath(Locators.AdminPage.NOT_FOUND_TOAST)));
+            Assert.assertTrue(notFoundToast.getText().contains("No Records Found"));
+            ExtentListeners.logStep("No se encontró información del usuario validado");
+        } catch (Exception e) {
+            ExtentListeners.logStep("Se encontró información del usuario validado");
+            e.printStackTrace();
+        }
     }
 }

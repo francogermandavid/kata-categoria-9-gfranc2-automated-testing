@@ -6,9 +6,9 @@
         <listener class-name="listeners.ExtentListeners"/>
     </listeners>
 
-    <test name="Test to CRUD operations page">
+    <test name="Test to manage user on public website">
         <classes>
-            <class name="tests.TestFlujoUsuario"> </class>
+            <class name="tests.TestManageUser"> </class>
         </classes>
     </test>
 </suite>

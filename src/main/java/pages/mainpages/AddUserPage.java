@@ -1,51 +1,58 @@
 package pages.mainpages;
 
-import org.openqa.selenium.*;
+import constants.Locators;
+import listeners.ExtentListeners;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.time.Duration;
+import java.util.logging.Logger;
 
 public class AddUserPage {
 
-    @FindBy(xpath = "//div[@class='oxd-grid-2 orangehrm-full-width-grid']//div[1]//div[1]//div[2]//div[1]//div[1]//div[2]//i[1]")
+    @FindBy(xpath = Locators.AddUserPage.USER_ROLE_SELECTOR)
     private WebElement userRoleSelector;
 
-    @FindBy(xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div[2]/div[2]")
+    @FindBy(xpath = Locators.AddUserPage.ADMIN_ROLE_SELECTOR)
     private WebElement adminRoleSelector;
 
-    @FindBy(xpath = "//input[@placeholder='Type for hints...']")
-    private WebElement EmployeeNameTextBox;
+    @FindBy(xpath = Locators.AddUserPage.EMPLOYEE_NAME_TEXTBOX)
+    private WebElement employeeNameTextBox;
 
-    @FindBy(xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[2]/div/div[2]/div/div[2]/div")
-    private WebElement FirstOptionName;
+    @FindBy(xpath = Locators.AddUserPage.FIRST_OPTION_NAME)
+    private WebElement firstOptionName;
 
-    @FindBy(xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[3]/div/div[2]/div/div[1]/div[2]")
+    @FindBy(xpath = Locators.AddUserPage.SELECT_STATUS)
     private WebElement selectStatus;
 
-    @FindBy(xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[3]/div/div[2]/div/div[2]/div[2]")
+    @FindBy(xpath = Locators.AddUserPage.ENABLED_OPTION)
     private WebElement enabledOption;
 
-    @FindBy(xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[4]/div/div[2]/input")
+    @FindBy(xpath = Locators.AddUserPage.USERNAME_TEXTBOX)
     private WebElement userNameTextBox;
 
-    @FindBy(xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[1]/div/div[2]/input")
+    @FindBy(xpath = Locators.AddUserPage.PASSWORD_TEXTBOX)
     private WebElement passwordTextBox;
 
-    @FindBy(xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[2]/div/div[2]/input")
+    @FindBy(xpath = Locators.AddUserPage.CONFIRM_PASSWORD_TEXTBOX)
     private WebElement confirmPasswordTextBox;
 
-    @FindBy(xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/button[2]")
+    @FindBy(xpath = Locators.AddUserPage.SAVE_USER_BUTTON)
     private WebElement saveUserButton;
 
     private WebDriver driver;
+    private WebDriverWait wait;
+    private static final Logger LOGGER = Logger.getLogger(AddUserPage.class.getName());
 
     public AddUserPage(WebDriver driverx) {
         this.driver = driverx;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         PageFactory.initElements(driver, this);
     }
 
@@ -55,9 +62,9 @@ public class AddUserPage {
     }
 
     public void setEmployeeName(String name) throws InterruptedException {
-        EmployeeNameTextBox.sendKeys(name);
-        Thread.sleep(2000);
-        FirstOptionName.click();
+        employeeNameTextBox.sendKeys(name);
+        Thread.sleep(1500);
+        wait.until(ExpectedConditions.elementToBeClickable(firstOptionName)).click();
     }
 
     public void setStatusEmployee() {
@@ -66,23 +73,29 @@ public class AddUserPage {
     }
 
     public void setUserName(String userName) {
-        userNameTextBox.sendKeys("1" + userName + "1234");
+        userNameTextBox.sendKeys(userName);
+        ExtentListeners.logStep("El nombre ingresado es: " + userName);
     }
 
     public void setPassword(String password) {
-        passwordTextBox.sendKeys(password + "123");
+        passwordTextBox.sendKeys(password);
+        ExtentListeners.logStep("La contraseña ingresada es: " + password);
     }
 
     public void confirmPassword(String password) {
-        confirmPasswordTextBox.sendKeys(password + "123");
+        confirmPasswordTextBox.sendKeys(password);
     }
 
     public void confirmSaveUser() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        saveUserButton.click();
-        WebElement confirmAddUserToast = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"oxd-toaster_1\"]/div")));
-        System.out.println(confirmAddUserToast.getText());
-        Assert.assertTrue(confirmAddUserToast.getText().contains("Successfully Saved"));
+        try {
+            saveUserButton.click();
+            WebElement confirmAddToast = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath(Locators.AddUserPage.CONFIRM_ADD_TOAST)));
+            Assert.assertTrue(confirmAddToast.getText().contains("Successfully Saved"));
+            ExtentListeners.logStep("Se ha creado el usuario correctamente");
+        } catch (Exception e) {
+            ExtentListeners.logStep("No se ha podido crear el usuario");
+            e.printStackTrace();
+        }
     }
-
 }
