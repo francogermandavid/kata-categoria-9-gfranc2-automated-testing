@@ -66,7 +66,7 @@ public class AddUserPage {
         wait.until(ExpectedConditions.elementToBeClickable(firstOptionName)).click();
     }
 
-    public void setStatusEmployee() {
+    public void setStatusEnabled() {
         selectStatus.click();
         enabledOption.click();
     }
