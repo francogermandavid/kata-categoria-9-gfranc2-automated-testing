@@ -1,4 +1,4 @@
-package pages.mainpages;
+package pages;
 
 import constants.Locators;
 import org.openqa.selenium.WebDriver;
