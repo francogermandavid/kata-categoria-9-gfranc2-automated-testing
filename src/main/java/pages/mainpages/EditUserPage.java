@@ -11,7 +11,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.time.Duration;
-import java.util.logging.Logger;
 
 import static constants.Locators.EditUserPage.CHANGE_PASS_CHECKBOX_XPATH;
 import static constants.Locators.EditUserPage.CONFIRM_EDIT_TOAST_XPATH;
@@ -50,7 +49,6 @@ public class EditUserPage {
     private WebElement saveUserButton;
 
     private WebDriver driver;
-    private static final Logger LOGGER = Logger.getLogger(EditUserPage.class.getName());
 
     public EditUserPage(WebDriver driverx) {
         this.driver = driverx;

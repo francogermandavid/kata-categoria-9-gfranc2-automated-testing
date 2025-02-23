@@ -48,7 +48,6 @@ public class AddUserPage {
 
     private WebDriver driver;
     private WebDriverWait wait;
-    private static final Logger LOGGER = Logger.getLogger(AddUserPage.class.getName());
 
     public AddUserPage(WebDriver driverx) {
         this.driver = driverx;

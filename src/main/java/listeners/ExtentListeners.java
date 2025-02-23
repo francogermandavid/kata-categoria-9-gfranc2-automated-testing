@@ -68,8 +68,4 @@ public class ExtentListeners implements ITestListener {
             extent.flush();
         }
     }
-
-    public void remove() {
-        testReport.remove();
-    }
 }

@@ -6,8 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import java.util.logging.Logger;
-
 import static constants.Locators.LoginPage.LOGIN_BUTTON_XPATH;
 import static constants.Locators.LoginPage.PASSWORD_FRAME_XPATH;
 import static constants.Locators.LoginPage.PASSWORD_TEXTBOX_XPATH;
@@ -32,8 +30,6 @@ public class LoginPage {
     private WebElement passwordFrame;
 
     private WebDriver driver;
-    private static final Logger LOGGER = Logger.getLogger(LoginPage.class.getName());
-
 
     public LoginPage(WebDriver driverx) {
         this.driver = driverx;
