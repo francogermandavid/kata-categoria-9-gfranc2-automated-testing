@@ -12,7 +12,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.time.Duration;
-import java.util.logging.Logger;
 
 public class AdminPage {
     @FindBy(xpath = Locators.AdminPage.ADD_USER_BUTTON)
@@ -23,7 +22,6 @@ public class AdminPage {
 
     private WebDriver driver;
     private WebDriverWait wait;
-    private static final Logger LOGGER = Logger.getLogger(AdminPage.class.getName());
 
     public AdminPage(WebDriver driverx) {
         this.driver = driverx;
