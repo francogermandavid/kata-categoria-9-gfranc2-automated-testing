@@ -56,32 +56,80 @@ El patrón Page Object Model (POM) mejora la mantenibilidad y la legibilidad del
 - **Integración continua**: Compatible con **GitHub Actions** para ejecución automatizada en pipelines CI/CD.
 - **Reportes automatizados**: Generación de reportes en HTML tras la ejecución de pruebas.
 
-## Estructura del Proyecto
-
-```
-kata-categoria-9-gfranc2-automated-testing/
-│── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   ├── pages/          # Clases que representan las páginas web (POM)
-│   │   │   ├── utils/          # Métodos reutilizables y configuración
-│   │   │   ├── constants/      # Definición de constantes usadas en el proyecto
-│   │   │   ├── listeners/      # Implementaciones de listeners para reporte de eventos
-│   ├── test/
-│   │   ├── java/
-│   │   │   ├── tests/          # Clases de prueba que validan los flujos
-│── pom.xml                      # Gestión de dependencias con Maven
-│── testNG.xml                   # Configuración de TestNG
-│── AutomationReport.html        # Reporte de ejecución de pruebas
-│── .gitignore                   # Archivos ignorados en el repositorio
-│── README.md                    # Documentación del proyecto
-```
-
 ## Requisitos Previos
 
 - **Java 17+**
 - **Maven** instalado y configurado
 - **WebDriver dependiendo de tu navegador** (para pruebas en Selenium)
+
+## Estructura del Proyecto
+
+```
+kata-categoria-9-gfranc2-automated-testing/
+│── .github/
+│   ├── workflows/                               # Definición de pipelines de CI/CD en GitHub Actions
+│   │   ├── kata-test-integration.yml            # Workflow para ejecutar pruebas automatizadas
+│── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   ├── pages/           # Clases que representan las páginas web (POM)
+│   │   │   ├── utils/           # Métodos reutilizables y configuración
+│   │   │   ├── constants/       # Definición de constantes del proyecto
+│   │   │   ├── listeners/       # Listeners para eventos de TestNG
+│   ├── test/
+│   │   ├── java/
+│   │   │   ├── tests/           # Clases de prueba que validan los flujos
+│── pom.xml                      # Gestión de dependencias con Maven
+│── testNG.xml                   # Configuración de TestNG
+│── AutomationReport.html         # Reporte de ejecución de pruebas
+│── .gitignore                    # Archivos ignorados en el repositorio
+│── README.md                     # Documentación del proyecto
+
+```
+
+## Explicación del Workflow en GitHub Actions
+
+El archivo `kata-test-integration.yml` define un pipeline de CI/CD que se ejecuta en GitHub Actions. A continución, se detallan los pasos del flujo de trabajo:
+
+```yml
+   name: Run test workflow for kata
+   
+   on:
+    push:
+      branches:
+        - master
+        - staging
+   
+   jobs:
+   integration-kata-test:
+   runs-on: ubuntu-latest  # Define el sistema operativo en el que se ejecutará el workflow
+   
+       steps:
+         - name: Checkout automation project
+           uses: actions/checkout@v4  # Descarga el código fuente del repositorio
+   
+         - name: Set up JDK
+           uses: actions/setup-java@v3
+           with:
+             java-version: '21'      # Especifica la versión de Java
+   
+         - name: Install dependencies for automation project
+           run: mvn clean install -DskipTests  # Descarga dependencias y compila sin ejecutar pruebas
+   
+         - name: Run test cases for automation kata project
+           run: mvn test -P run-testing  # Ejecuta los casos de prueba con el perfil "run-testing"
+   
+         - name: Upload test report artifact
+           if: always()
+           uses: actions/upload-artifact@v4
+           with:
+             name: test-report  # Nombre del artefacto a subir
+             path: AutomationReport.html  # Ruta del archivo generado con los resultados de la prueba
+```
+
+Cada sección configura el entorno, instala dependencias, ejecuta pruebas y sube los reportes generados. Si deseas personalizar el flujo de trabajo, puedes modificar este archivo según tus necesidades,
+por cambiar la versión de Java que quieres usar, los comandos usados para ejecutar o añadir pasos adicionales.
+
 
 ## Instalación y Ejecución
 
@@ -90,11 +138,17 @@ kata-categoria-9-gfranc2-automated-testing/
    git clone https://github.com/tu-repositorio.git
    cd kata-categoria-9-gfranc2-automated-testing
    ```
-2. Instala las dependencias y ejecuta las pruebas:
+2. Instala las dependencias necesarias para tu proyecto:
    ```sh
-   mvn clean test
+   mvn clean install -DskipTests
    ```
-3. Revisa los reportes generados en `AutomationReport.html`.
+
+2. Ejecuta tus test con el comando:
+   ```sh
+   mvn test -P run-testing
+   ```
+
+4. Revisa los reportes generados en `AutomationReport.html`.
 
 ## Contribución
 

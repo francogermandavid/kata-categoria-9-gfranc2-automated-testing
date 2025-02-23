@@ -1,4 +1,4 @@
-package pages.mainpages;
+package pages;
 
 import constants.Locators;
 import listeners.ExtentListeners;
@@ -12,7 +12,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.time.Duration;
-import java.util.logging.Logger;
 
 public class AddUserPage {
 

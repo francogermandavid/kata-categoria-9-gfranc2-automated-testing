@@ -17,10 +17,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'adopt'
           java-version: '21'
-          architecture: x64
-          cache: 'maven'
 
       - name: Install dependencies for automation project
         run: mvn clean install -DskipTests

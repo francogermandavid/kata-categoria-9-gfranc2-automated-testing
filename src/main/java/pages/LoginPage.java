@@ -1,4 +1,4 @@
-package pages.mainpages;
+package pages;
 
 import listeners.ExtentListeners;
 import org.openqa.selenium.WebDriver;

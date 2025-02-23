@@ -5,11 +5,11 @@ import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-import pages.mainpages.AddUserPage;
-import pages.mainpages.AdminPage;
-import pages.mainpages.DashBoardPage;
-import pages.mainpages.EditUserPage;
-import pages.mainpages.LoginPage;
+import pages.AddUserPage;
+import pages.AdminPage;
+import pages.DashBoardPage;
+import pages.EditUserPage;
+import pages.LoginPage;
 import utils.DriverFactory;
 
 import java.time.Duration;
