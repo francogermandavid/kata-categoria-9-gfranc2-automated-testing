@@ -1,34 +1,38 @@
 package pages.mainpages;
 
+import listeners.ExtentListeners;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.logging.Logger;
+
+import static constants.Locators.LoginPage.LOGIN_BUTTON_XPATH;
+import static constants.Locators.LoginPage.PASSWORD_FRAME_XPATH;
+import static constants.Locators.LoginPage.PASSWORD_TEXTBOX_XPATH;
+import static constants.Locators.LoginPage.USERNAME_FRAME_XPATH;
+import static constants.Locators.LoginPage.USERNAME_TEXTBOX_XPATH;
 
 public class LoginPage {
-    @FindBy(xpath = "//input[@placeholder='Username']")
+
+    @FindBy(xpath = USERNAME_TEXTBOX_XPATH)
     private WebElement userNameTextBox;
 
-    @FindBy(xpath = "//input[@placeholder='Password']")
+    @FindBy(xpath = PASSWORD_TEXTBOX_XPATH)
     private WebElement passwordTextBox;
 
-    @FindBy(xpath = "//button[@type='submit']")
+    @FindBy(xpath = LOGIN_BUTTON_XPATH)
     private WebElement loginButton;
 
-    @FindBy(xpath = "//p[normalize-space()='Username : Admin']")
+    @FindBy(xpath = USERNAME_FRAME_XPATH)
     private WebElement userNameFrame;
 
-    @FindBy(xpath = "//p[normalize-space()='Password : admin123']")
+    @FindBy(xpath = PASSWORD_FRAME_XPATH)
     private WebElement passwordFrame;
 
     private WebDriver driver;
-    private String userNameText;
-    private String passwordText;
-    private String userName;
-    private String password;
+    private static final Logger LOGGER = Logger.getLogger(LoginPage.class.getName());
 
 
     public LoginPage(WebDriver driverx) {
@@ -37,15 +41,11 @@ public class LoginPage {
     }
 
     public String getCorrectUserName() {
-        userNameText = userNameFrame.getText();
-        userName = userNameText.split(":")[1].trim();
-        return userName;
+        return userNameFrame.getText().split(":")[1].trim();
     }
 
     public String getCorrectPassword() {
-        passwordText = passwordFrame.getText();
-        password = passwordText.split(":")[1].trim();
-        return password;
+        return passwordFrame.getText().split(":")[1].trim();
     }
 
     public void sendUserName(String username) {
@@ -59,4 +59,17 @@ public class LoginPage {
     public void clickLogin() {
         loginButton.click();
     }
+
+    public void login(String user, String pass) {
+        try {
+            sendUserName(user);
+            sendPassword(pass);
+            clickLogin();
+            ExtentListeners.logStep("Se realizó el login correctamente");
+        } catch (Exception e) {
+            ExtentListeners.logStep("Hubo un error al realizar el login");
+            e.printStackTrace();
+        }
+    }
 }
+

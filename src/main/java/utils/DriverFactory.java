@@ -12,19 +12,10 @@ public class DriverFactory {
         if (driver == null) {
             WebDriverManager.chromedriver().setup();
             ChromeOptions options = new ChromeOptions();
-            options.addArguments("--headless");  // Iniciar en modo headless
-            options.addArguments("--disable-gpu"); // Desactivar GPU (para evitar problemas)
-            options.addArguments("--no-sandbox");
+            options.addArguments("--headless", "--disable-gpu", "--no-sandbox");
             driver = new ChromeDriver(options);
             driver.manage().window().maximize();
         }
         return driver;
-    }
-
-    public static void closeDriver() {
-        if (driver != null) {
-            driver.quit();
-            driver = null;
-        }
     }
 }

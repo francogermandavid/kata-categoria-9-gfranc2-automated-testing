@@ -15,7 +15,7 @@ public final class ExtentManager {
         ExtentReports extent;
         ExtentSparkReporter htmlReporter = new ExtentSparkReporter(fileName);
 
-        htmlReporter.config().setTheme(Theme.DARK);
+        htmlReporter.config().setTheme(Theme.STANDARD);
         htmlReporter.config().setDocumentTitle(fileName);
         htmlReporter.config().setEncoding("utf-8");
         htmlReporter.config().setReportName(fileName);
@@ -23,7 +23,7 @@ public final class ExtentManager {
         extent.attachReporter(htmlReporter);
         extent.setSystemInfo("Automation Tester", "Germán Franco");
         extent.setSystemInfo("Organization", "Banco de Bogotá");
-        extent.setSystemInfo("Team", "OpenBanking");
+        extent.setSystemInfo("Team", "OpenFinance");
 
         return extent;
     }
