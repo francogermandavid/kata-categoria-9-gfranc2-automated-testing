@@ -23,7 +23,7 @@ jobs:
           cache: 'maven'
 
       - name: Install dependencies for automation project
-        run: mvn clean install
+        run: mvn clean install -DskipTests
 
       - name: Run test cases for automation kata project
         run: mvn test
@@ -33,5 +33,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test-report
-          path: ./AutomationReport.html
+          path: AutomationReport.html
 
