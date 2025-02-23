@@ -1,6 +1,6 @@
 # Proyecto: Automatización de Pruebas con Page Object Model (POM)
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=bbog-ob-automated-testing&metric=alert_status&token=15056f4f194e0c3dc8318b8a227e13750ddf4f07)](https://sonarcloud.io/summary/new_code?id=bbog-ob-automated-testing)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=bbog-of-automated-testing&metric=alert_status&token=15056f4f194e0c3dc8318b8a227e13750ddf4f07)](https://sonarcloud.io/summary/new_code?id=bbog-of-automated-testing)
 
 ## Descripción
 
@@ -10,7 +10,7 @@ Este repositorio contiene el proyecto de automatización correspondiente a la p�
 
 ### Lenguaje de programación: Java
 
-![Java](https://img.shields.io/badge/Java-17-orange)
+![Java](https://img.shields.io/badge/Java-21-orange)
 
 Java es una excelente opción para proyectos de automatización debido a su portabilidad, compatibilidad con múltiples sistemas operativos gracias a la JVM y su fuerte tipado. Su robustez y amplia comunidad aseguran estabilidad, facilidad de mantenimiento y soluciones constantes.
 
