@@ -1,6 +1,6 @@
 # Proyecto: Automatización de Pruebas con Page Object Model (POM)
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=bbog-ob-automated-testing&metric=alert_status&token=15056f4f194e0c3dc8318b8a227e13750ddf4f07)](https://sonarcloud.io/summary/new_code?id=bbog-ob-automated-testing)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=bbog-of-automated-testing&metric=alert_status&token=15056f4f194e0c3dc8318b8a227e13750ddf4f07)](https://sonarcloud.io/summary/new_code?id=bbog-of-automated-testing)
 
 ## Descripción
 
@@ -10,7 +10,7 @@ Este repositorio contiene el proyecto de automatización correspondiente a la p�
 
 ### Lenguaje de programación: Java
 
-![Java](https://img.shields.io/badge/Java-17-orange)
+![Java](https://img.shields.io/badge/Java-21-orange)
 
 Java es una excelente opción para proyectos de automatización debido a su portabilidad, compatibilidad con múltiples sistemas operativos gracias a la JVM y su fuerte tipado. Su robustez y amplia comunidad aseguran estabilidad, facilidad de mantenimiento y soluciones constantes.
 
@@ -129,7 +129,7 @@ El archivo `kata-test-integration.yml` define un pipeline de CI/CD que se ejecut
 ```
 
 Cada sección configura el entorno, instala dependencias, ejecuta pruebas y sube los reportes generados. Si deseas personalizar el flujo de trabajo, puedes modificar este archivo según tus necesidades,
-por cambiar la versión de Java que quieres usar, los comandos usados para ejecutar o añadir pasos adicionales.
+por ejemplo cambiar la versión de Java que quieres usar, los comandos de instalación/ejecución o añadir pasos adicionales.
 
 
 ## Instalación y Ejecución
@@ -158,6 +158,14 @@ Si deseas contribuir, por favor sigue el estándar de código y envía un **Pull
 ## Licencia
 
 Este proyecto es de libre uso y distribución para quien desee utilizarlo.
+
+## Referencias
+
+Patrón de diseño page object model POM https://www.selenium.dev/documentation/test_practices/encouraged/page_object_models/
+
+Guía de inicio rápido para GitHub Actions https://docs.github.com/es/actions/writing-workflows/quickstart
+
+Repositorio de dependencias maven https://mvnrepository.com/
 
 
 
