@@ -1,6 +1,6 @@
 # Proyecto: Automatización de Pruebas con Page Object Model (POM)
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=bbog-of-automated-testing&metric=alert_status&token=15056f4f194e0c3dc8318b8a227e13750ddf4f07)](https://sonarcloud.io/summary/new_code?id=bbog-of-automated-testing)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=bbog-of-automated-testing&metric=alert_status&token=15056f4f194e0c3dc8318b8a227e13750ddf4f07)]()
 
 ## Descripción
 

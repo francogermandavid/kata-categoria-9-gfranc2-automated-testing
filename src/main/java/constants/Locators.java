@@ -1,6 +1,7 @@
 package constants;
 
 public class Locators {
+
     public static class AdminPage {
         public static final String ADD_USER_BUTTON = "//button[normalize-space()='Add']";
         public static final String FIRST_EMPLOYEE_NAME = "//div[@role='rowgroup']"
